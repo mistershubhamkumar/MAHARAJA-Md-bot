@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scan QR to Connect</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      font-family: sans-serif;
+      display: flex;
+      height: 100vh;
+      margin: 0;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .container {
+      background-color: #ffffff22;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    #qr {
+      background: white;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #00c6ff;
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0072ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Scan QR Code to Connect WhatsApp</h2>
+    <canvas id="qr"></canvas>
+    <br />
+    <button onclick="reload()">Reload QR</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    async function loadQR() {
+      const res = await fetch('/qr');
+      const data = await res.json();
+      if (data.qr) {
+        QRCode.toCanvas(document.getElementById('qr'), data.qr, { width: 250 });
+      } else {
+        document.getElementById('qr').outerHTML = `<p>❌ ${data.error}</p>`;
+      }
+    }
+
+    function reload() {
+      window.location.reload();
+    }
+
+    loadQR();
+  </script>
+</body>
+</html>
