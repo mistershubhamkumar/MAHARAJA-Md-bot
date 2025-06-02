@@ -5,6 +5,9 @@ const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = requi
 const pino = require("pino");
 require("dotenv").config();
 
+// ✅ QR session import
+const { startQR, getQRCode } = require("./qr-session");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -12,12 +15,25 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Route: Homepage fallback
+// ✅ Start QR session at server launch
+startQR();
+
+// ✅ QR Code endpoint
+app.get("/qr", (req, res) => {
+  const qr = getQRCode();
+  if (qr) {
+    res.json({ qr });
+  } else {
+    res.json({ error: "QR not available. Already connected or initializing..." });
+  }
+});
+
+// ✅ Home route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Route: Pair Code
+// ✅ Pair Code route
 app.post("/pair", async (req, res) => {
   const number = req.body.number;
 
@@ -36,17 +52,17 @@ app.post("/pair", async (req, res) => {
     auth: state,
     printQRInTerminal: false,
     logger: pino({ level: "silent" }),
-    browser: ["Bot", "Safari", "1.0"],
+    browser: ["LevanterBot", "Chrome", "1.0"],
   });
 
   sock.ev.once("connection.update", (update) => {
-    const { qr, connection, lastDisconnect, pairingCode } = update;
+    const { connection, lastDisconnect, pairingCode } = update;
 
     if (pairingCode) {
       fs.writeFileSync("config.env", `SESSION_ID=${sessionId}`);
       res.json({ pairingCode });
     } else if (connection === "close") {
-      const reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
+      const reason = lastDisconnect?.error?.output?.statusCode;
       res.status(500).json({ error: "❌ Connection closed, try again." });
     }
   });
@@ -59,7 +75,7 @@ app.post("/pair", async (req, res) => {
   }
 });
 
-// Auto session loader
+// ✅ Auto session loader
 (async () => {
   const sessionId = process.env.SESSION_ID;
   if (!sessionId) {
@@ -78,7 +94,7 @@ app.post("/pair", async (req, res) => {
   const sock = makeWASocket({
     auth: state,
     logger: pino({ level: "info" }),
-    browser: ["Bot", "Chrome", "1.0"],
+    browser: ["LevanterBot", "Chrome", "1.0"],
   });
 
   sock.ev.on("creds.update", saveCreds);
@@ -97,6 +113,7 @@ app.post("/pair", async (req, res) => {
   });
 })();
 
+// ✅ Server listen
 app.listen(PORT, () => {
   console.log(`🌐 Server running on http://localhost:${PORT}`);
 });
