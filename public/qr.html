@@ -4,8 +4,8 @@
   <title>Scan QR to Connect</title>
   <style>
     body {
-      background: linear-gradient(to right, #667eea, #764ba2);
-      font-family: sans-serif;
+      background: linear-gradient(to right, #ff6a00, #ee0979);
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       height: 100vh;
       margin: 0;
@@ -13,18 +13,26 @@
       justify-content: center;
       color: white;
     }
+
     .container {
-      background-color: #ffffff22;
+      background-color: rgba(255, 255, 255, 0.1);
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
       text-align: center;
     }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
     #qr {
       background: white;
       padding: 10px;
       margin-top: 20px;
+      border-radius: 10px;
     }
+
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -35,17 +43,25 @@
       border-radius: 8px;
       cursor: pointer;
     }
+
     button:hover {
       background: #0072ff;
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-size: 18px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Scan QR Code to Connect WhatsApp</h2>
+    <h2>📷 Scan this QR in WhatsApp</h2>
     <canvas id="qr"></canvas>
     <br />
-    <button onclick="reload()">Reload QR</button>
+    <button onclick="reload()">🔄 Reload QR</button>
+    <div id="msg" class="error"></div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -53,10 +69,15 @@
     async function loadQR() {
       const res = await fetch('/qr');
       const data = await res.json();
+      const qrCanvas = document.getElementById('qr');
+      const msg = document.getElementById('msg');
+
       if (data.qr) {
-        QRCode.toCanvas(document.getElementById('qr'), data.qr, { width: 250 });
+        QRCode.toCanvas(qrCanvas, data.qr, { width: 250 });
+        msg.innerText = "";
       } else {
-        document.getElementById('qr').outerHTML = `<p>❌ ${data.error}</p>`;
+        qrCanvas.style.display = "none";
+        msg.innerText = data.error || "QR not available.";
       }
     }
 
