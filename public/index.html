@@ -1,20 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WhatsApp Bot Panel</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Shubham Md Bot Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1d2671, #c33764);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2.5em;
+    }
+
+    .btn {
+      display: block;
+      width: 200px;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 18px;
+      background: #00c6ff;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #0072ff;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>🤖 SHUBHAM WhatsApp Bot</h1>
-    <p>Choose a login method to connect your WhatsApp number:</p>
-
-    <div class="button-box">
-      <a href="pair.html" class="btn">🔢 Pair Code Login</a>
-      <a href="qr.html" class="btn">🔳 QR Code Login</a>
-    </div>
+    <h1>Welcome to Shubham Md</h1>
+    <button class="btn" onclick="location.href='pair.html'">🔐 Pair Code</button>
+    <button class="btn" onclick="location.href='qr.html'">📲 QR Code</button>
   </div>
 </body>
 </html>
