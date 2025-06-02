@@ -1,44 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhatsApp Bot Panel</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #ffecd2, #fcb69f);
-      font-family: sans-serif;
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
-    }
-    .box {
-      background: #fff;
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    }
-    button {
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      margin: 15px;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      opacity: 0.9;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="box">
-    <h1>WhatsApp Bot Panel</h1>
-    <button onclick="location.href='pair.html'">Pair Code</button>
-    <button onclick="location.href='qr.html'">QR Code</button>
+  <div class="container">
+    <h1>🤖 SHUBHAM WhatsApp Bot</h1>
+    <p>Choose a login method to connect your WhatsApp number:</p>
+
+    <div class="button-box">
+      <a href="pair.html" class="btn">🔢 Pair Code Login</a>
+      <a href="qr.html" class="btn">🔳 QR Code Login</a>
+    </div>
   </div>
 </body>
 </html>
